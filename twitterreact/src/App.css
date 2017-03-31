@@ -98,7 +98,7 @@ a:hover#like {
 }
 
 
-/*css for login and sign up forn */
+/*css for login and sign up form */
 
 
 
@@ -135,4 +135,15 @@ a:hover#like {
   border: 1px solid rgba(0,0,0,0.1);
 }
 
+nav .brand-logo {
+   margin-left: 30px;
+}
 
+.modal .modal-content {
+    background-color: white;
+    height: 350px;
+}
+
+.modal .modal-footer .btn, .modal .modal-footer .btn-large, .modal .modal-footer .btn-flat {
+    color: black;
+}

@@ -91,9 +91,7 @@ router.post('/register', upload.single('file'), (req, res, next) => {
 
 
 
-router.get('/login', (req, res) => {
-  res.render('login');
-});
+
 
 router.post('/login', (req, res, next) => {
   console.log("POST.Login called"+ '********')
@@ -105,12 +103,7 @@ router.post('/login', (req, res, next) => {
   const session = req.session;
   const emailid = req.body.userdata.emailid;
   const password = req.body.userdata.password;
-  // if (emailid !== '') {
-  //   req.checkBody('emailid', 'Email is not valid').isEmail();
-  // } else {
-  //   req.checkBody('emailid', 'Email is required').notEmpty();
-  // }
-  // req.checkBody('password', 'Password is required').notEmpty();
+
 
   const query = DB.builder()
     .select()
@@ -121,8 +114,9 @@ router.post('/login', (req, res, next) => {
     if (error) {
       next(error);
     }
-    console.log(results.rowCount);
+    console.log("=======",query)
     if (results.rowCount) {
+      console.log(results.rowCount);
       session.emailid = emailid;
       session.userid = results.rows[0].id;
       console.log(session.id, '@@@@@@@@@@')
@@ -149,79 +143,106 @@ router.get('/index', (req, res) => {
   res.render('index');
 });
 
-router.get('/header:userid', (req, res, next) => {
+router.get('/header/:id', (req, res, next) => {
+  console.log('HEADER GET called' + '**************')
   let query;
-  userid = req.params.userid;
-  const session = req.session;
-  if (req.session.emailid) {
+  let userid= req.params.id;
+  query = DB.builder()
+    .select()
+    .field('fullname')
+    .field('t_tweetText')
+    .field('image')
+    .field('t_likeCount')
+    .field('t.*')
+    .from('tbl_register', 'r')
+    .join('tbl_tweet', 't', 't.t_userid = r.id')
+    .where(DB.builder().expr()
+      .or('t.t_userid IN ?', DB.builder()
+        .select()
+        .field('f_followerid')
+        .from('tbl_follower')
+        .where('f_userid = ?', userid))
+      .or('t.t_userid= ?', userid))
+    .order('t_time', false);
+  // console.log(query.toString());
+  DB.executeQuery(query.toParam(), (error, tweets) => {
+    if (error) {
+      next(error);
+    }
     query = DB.builder()
-      .select()
-      .field('fullname')
-      .field('t_tweetText')
-      .field('image')
-      .field('t.*')
-      .from('tbl_register', 'r')
-      .join('tbl_tweet', 't', 't.t_userid = userid')
-      .where(DB.builder().expr()
-        .or('t.t_userid IN ?', DB.builder()
+        .select()
+        .from('tbl_register')
+        .where('id != ?', userid)
+        .where('id NOT IN ?',
+        DB.builder()
           .select()
           .field('f_followerid')
           .from('tbl_follower')
-          .where('f_userid = ?',userid))
-        .or('t.t_userid= ?', userid))
-      .order('t_time', false);
-    console.log(query.toString());
-    DB.executeQuery(query.toParam(), (error, tweets) => {
-      if (error) {
-        next(error);
+          .where('f_userid = ?', userid))
+          .order('RANDOM()')
+          .limit(3)
+          .toParam();
+    DB.executeQuery(query, (error1, follow) => {
+      if (error1) {
+        next(error1);
+        return;
       }
-      query = DB.builder()
-          .select()
-          .from('tbl_register')
-          .where('id != ?', userid)
-          .where('id NOT IN ?',
-          DB.builder()
-             .select()
-             .field('f_followerid')
-             .from('tbl_follower')
-             .where('f_userid = ?', userid))
-             .toParam();
-      DB.executeQuery(query, (error1, follow) => {
-        if (error1) {
-          next(error1);
+
+    query = DB.builder()
+      .select()
+      .from('tbl_register', 'r')
+      .field('fullname')
+      .field('id')
+      .field('image')
+      .where('id = ?', userid)
+      .toParam();
+      // console.log(query);
+
+      DB.executeQuery(query, (error2, username) => {
+        if (error2) {
+          next(error2);
+          return;
+        }
+    query = DB.builder()
+      .select()
+      .from('tbl_follower', 'r')
+      .where('f_userid = ?', userid)
+      .toParam();
+
+    console.log("//////",userid);
+      DB.executeQuery(query, (error2, count) => {
+        if (error2) {
+          next(error2);
           return;
         }
 
-        query = DB.builder()
-        .select()
-        .from('tbl_register', 'r')
-        .field('fullname')
-        .field('image')
-        .where('id = ?', userid)
-        .toParam();
-        console.log(query);
+    query = DB.builder()
+      .select()
+      .from('tbl_register', 'r')
+      .where('id = ?', userid)
+      .toParam();
 
-        DB.executeQuery(query, (error2, username) => {
-          if (error2) {
-            next(error2);
-            return;
-          }
-          res.render('header', {
-            tweets: tweets.rows,
-            follow: follow.rows,
-            username: username.rows,
-          });
+    console.log("//////",userid);
+      DB.executeQuery(query, (error2, count1) => {
+        if (error2) {
+          next(error2);
+          return;
+        }
+
+
+        let data = {
+          tweets: tweets.rows,
+          follow: follow.rows,
+          username: username.rows,
+          count: count.rows.length,
+          count1: count1.rows.length,
+        }
+        res.end(JSON.stringify(data));
+    });
         });
       });
-    let data ={
-      userid: session.userid,
-
-    }
-    res.end(JSON.stringify(data));
     });
-  } else {
-    res.render('login');
-  }
+  });
 });
 
 router.post('/header', uploadtweet.single('file'), (req, res, next) => {
@@ -310,6 +331,32 @@ router.get('/profile', (req, res, next) => {
   }
 });
 
+router.post('/tweet', (req, res, next) => {
+  const session = req.session;
+  const emailid = req.body.data.emailid;
+  let userid = req.body.data.data.username[0].id;
+  console.log("aaaaaaa", userid);
+  const tweetText = req.body.data.tweet;
+  console.log("/////////////", tweetText);
+  const query = DB.builder()
+    .insert()
+    .into('tbl_tweet')
+    .set('t_tweetText', req.body.data.tweet)
+    .set('t_time', 'now()')
+    .set('t_userid', userid)
+    .toParam();
+  DB.executeQuery(query, (error) => {
+    if (error) {
+      next(error);
+    }
+    let data = {
+      id: userid,
+    }
+    res.end(JSON.stringify(data));
+  });
+});
+
+
 router.post('/profile', (req, res, next) => {
   const query = DB.builder()
     .insert()
@@ -358,7 +405,7 @@ router.post('/unfollow', (req, res, next) => {
   });
 });
 
-router.get('/updateprofile', (req, res, next) => {
+router.get('/updateprofile/:userid', (req, res, next) => {
   const session = req.session;
   const query = DB.builder()
     .select()

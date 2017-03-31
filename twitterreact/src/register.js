@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { browserHistory } from 'react-router';
 import { HelpBlock } from 'react-bootstrap';
+import { Button, Row, Col, Icon, NavItem, Navbar } from 'react-materialize';
 
 class register extends Component {
   constructor(props) {
@@ -46,6 +47,10 @@ class register extends Component {
     console.log(this.state);
     return (
       <div>
+        <Navbar brand='Twitter' className='indigo' right>
+          <NavItem href='/login'>Login</NavItem>
+          <NavItem href='/register'>Register</NavItem>
+        </Navbar>
         <div className="container">
           <div className="wrapper">
             <form action="/register" method="POST"

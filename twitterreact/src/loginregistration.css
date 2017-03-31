@@ -1,0 +1,218 @@
+body {
+  margin: 0px;
+  font-family: sans-serif;
+  background-color: #f2f2f2;
+}
+/*navbar*/
+
+.nav {
+  background-color: #ffe0b2;
+  height: 60px;
+}
+
+/*img{
+  margin-left: 10px;
+}*/
+
+.nav ul li img{
+  /*margin-left: 10px;*/
+  padding-bottom: 20px;
+  height: 40px;
+}
+
+.nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.nav ul:first-child {
+  float: left;
+}
+
+.nav ul:nth-child(2) {
+  float: right;
+  margin: 0;
+}
+
+.nav ul:nth-child(2) li {
+  display: inline-block;
+}
+
+.nav ul:nth-child(2) li a{
+  color: #303030;
+  text-decoration: none;
+  margin-right: 10px;
+  display: block;
+  padding: 20px 20px;
+}
+
+.nav ul:nth-child(2) li a:hover{
+  color: white;
+  background-color: #777;
+}
+
+.clear {
+  clear: both;
+}
+
+.loginForm {
+  margin:40px auto;
+  border:1px solid #d9d9d9;
+  width: 350px;
+  height: 300px;
+  border-radius: 2px;
+  background-color: white;
+  font-family: 'Titillium Web', sans-serif;
+  padding: 20px;
+}
+
+.labelLetsStart {
+  padding-left: 25%;
+  font-size: 40px;
+  color:#666666;
+}
+.labelForgotPass {
+  padding-left:79.345px;
+  color:#666666;
+}
+
+.labelOr {
+  padding-left: 40px;
+  color:#666666;
+}
+
+.loginForm input[type=submit] {
+  background-color: #5ad886;
+  color: white;
+}
+
+.googleImage {
+  width: 80%;
+  height: 60px;
+  padding-left: 40px;
+  padding-top: 30px;
+}
+
+.loginForm input {
+  height: 44px;
+  font-size: 16px;
+  margin-bottom: 10px;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  border-top: 1px solid #c0c0c0;
+  border-radius: 2px;
+  box-sizing: border-box;
+  width: 80%;
+  border-radius: 5px;
+  margin-left: 40px;
+  padding-left: 10px;
+}
+.loginDiv {
+  margin-top: 30px;
+}
+
+
+.registerForm {
+  margin:40px auto;
+  border:1px solid #d9d9d9;
+  width: 350px;
+  height: 460px;
+  border-radius: 2px;
+  background-color: white;
+  font-family: 'Titillium Web', sans-serif;
+  padding: 20px;
+}
+
+.registerForm input {
+  height: 44px;
+  font-size: 16px;
+  margin-bottom: 10px;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  border-top: 1px solid #c0c0c0;
+  border-radius: 2px;
+  box-sizing: border-box;
+  width: 80%;
+  border-radius: 5px;
+  margin-left: 40px;
+  padding-left: 10px;
+}
+
+.registerForm input[type=submit] {
+  background-color: #5ad886;
+}
+.registerDiv{
+  margin-top: 20px;
+}
+
+.labelRegisterHere {
+  margin-left: 55.1px;
+  font-size: 40px;
+  color:#666666;
+}
+
+.registerForm input[type=submit] {
+  background-color: #5ad886;
+  color: white;
+}
+
+.select {
+  height: 44px;
+  font-size: 16px;
+  margin-bottom: 10px;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  border-top: 1px solid #c0c0c0;
+  border-radius: 2px;
+  width: 80%;
+  margin-left: 40px;
+  padding-left: 10px;
+}
+@media screen and (max-width: 1200px){
+  .loginForm{
+    margin: 2% auto;
+    width: 350px;
+    height: 400px;
+   }
+  .registerForm {
+    margin: 2% auto;
+    width:392;
+    height:642;
+  }
+}
+
+@media screen and (max-width: 992px){
+  .loginForm{
+    margin: 2% auto;
+    width: 350px;
+    height: 400px;
+   }
+  .registerForm {
+    margin: 2% auto;
+    width:392;
+    height:642;
+  }
+}
+
+@media screen and (max-width: 768px){
+  .loginForm{
+    margin: 2% auto;
+    width: 350px;
+    height: 400px;
+   }
+  .registerForm {
+    margin: 2% auto;
+    width:392;
+    height:642;
+  }
+  .labelRegisterHere {
+    margin:2% auto;
+    font-size: 40px;
+    color:#666666;
+  }
+  .labelLetsStart {
+    margin-left:-50px;
+    font-size: 40px;
+    color:#666666;
+  }
+}

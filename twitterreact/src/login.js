@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-
+import cookie from 'react-cookie';
 import { Route, Router, browserHistory} from 'react-router';
+import { Button, Row, Col, Icon, NavItem, Navbar } from 'react-materialize';
 
 class login extends Component {
   constructor(props) {
@@ -23,7 +24,9 @@ class login extends Component {
   .then(function (response) {
     console.log(response.data.userid)
     if (response.data.userid) {
-      browserHistory.push("/header/" + response.data.userid)
+      let userid = response.data.userid;
+      cookie.save('userid', userid);
+      browserHistory.push(`/header/${cookie.load('userid')}`);
     } else {
         browserHistory.push("/login")
     }
@@ -52,6 +55,10 @@ class login extends Component {
     console.log(this.state);
     return (
       <div>
+        <Navbar brand='Twitter' className='indigo' right>
+          <NavItem href='/login'>Login</NavItem>
+          <NavItem href='/register'>Register</NavItem>
+        </Navbar>
         <div className="container">
           <div className="wrapper">
             <form action="/login" method="POST" className="form-login">

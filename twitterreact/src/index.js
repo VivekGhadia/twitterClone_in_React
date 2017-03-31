@@ -7,6 +7,7 @@ import './index.css';
 import App from './App';
 import register from './register'
 import login from './login';
+import logout from './logout';
 import navbar from './navbar';
 import profile from './profile';
 import updateprofile from './updateprofile';
@@ -25,13 +26,13 @@ ReactDOM.render((
     </Route>
     <Route path="/login" component={login}/>
     <Route path="/register" component={register}/>
-    <Route path="/profile" component={profile}/>
-      <Route path="/resetpassword" component={resetpassword}/>
-      <Route path="/updateprofile" component={updateprofile}/>
-      <Route path="/getpassword" component={getpassword}/>
-      <Route path="/upload" component={upload}/>
-      <Route path="/logout" component={login}/>
-      <Route path="/header/:userid" component={header}/>
+    <Route path="/profile/:userid" component={profile}/>
+    <Route path="/resetpassword" component={resetpassword}/>
+    <Route path="/updateprofile/:userid" component={updateprofile}/>
+    <Route path="/getpassword" component={getpassword}/>
+    <Route path="/upload" component={upload}/>
+    <Route path="/logout" component={logout}/>
+    <Route path="/header/:userid" component={header}/>
 
   </Router>
   ),
